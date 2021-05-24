@@ -23,7 +23,7 @@ func InitDatabase() {
 }
 
 func AutoMigrate() error {
-	err := DB.AutoMigrate(&models.Login{}).Error
+	err := DB.AutoMigrate(&models.Login{}, &models.User{}).Error
 	if err != nil {
 		log.Fatal(err)
 	}

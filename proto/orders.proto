@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = ".;proto";
+
+message CreateOrderRequest {
+  string userId = 1;
+  string productName = 2;
+  int32 totalAmount = 3;
+}
+
+message OrderResponse {
+  string orderId = 1;
+}
+
+message GetOrdersRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message OrdersResponse {
+  repeated OrderResponse orders = 1;
+}
+
+service Orders {
+  rpc CreateOrder (CreateOrderRequest) returns (OrderResponse) {}
+  rpc GetOrder (GetOrdersRequest) returns (OrdersResponse) {}
+}

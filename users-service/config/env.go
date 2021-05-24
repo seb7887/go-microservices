@@ -11,7 +11,10 @@ import (
 )
 
 type Configuration struct {
-	Port int `env:"PORT" default:"9000" json:"port"`
+	Port int `env:"PORT" default:"7000" json:"port"`
+	GRPCPort int `eng:"GRPC_PORT" default:"7001" json:"gRPCPort"`
+	DBType string `env:"DB_TYPE" default:"postgres" json:"dbType"`
+	DBConnection string `env:"DB_CONNECTION" default:"" json:"dbConnection"`
 }
 
 var _config *Configuration

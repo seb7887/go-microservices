@@ -15,6 +15,8 @@ type Configuration struct {
 	GRPCPort int `eng:"GRPC_PORT" default:"7001" json:"gRPCPort"`
 	DBType string `env:"DB_TYPE" default:"postgres" json:"dbType"`
 	DBConnection string `env:"DB_CONNECTION" default:"" json:"dbConnection"`
+	JWTSecret string `env:"JWT_SECRET" default:"jwtSecret" json:"jwtSecret"`
+	RedisHost string `env:"REDIS_HOST" default:":6379" json:"redisHost"`
 }
 
 var _config *Configuration

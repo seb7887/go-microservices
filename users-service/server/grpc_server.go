@@ -1,9 +1,11 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"github.com/seb7887/go-microservices/config"
 	"github.com/seb7887/go-microservices/proto"
+	"github.com/seb7887/go-microservices/server/handlers"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -40,3 +42,17 @@ func NewUsersGRPCServer() *UsersGRPCServer {
 	return grpcServer
 }
 
+func (gs *UsersGRPCServer) CreateUser(ctx context.Context, req *proto.CreateUserRequest) (*proto.UserResponse, error) {
+	log.Println("CreateUser called")
+	return handlers.Register(req.Username, req.Email, req.Password), nil
+}
+
+func (gs *UsersGRPCServer) LoginUser(ctx context.Context, req *proto.LoginUserRequest) (*proto.LoginResponse, error) {
+	log.Println("LoginUser called")
+	return handlers.Login(req.Email, req.Password)
+}
+
+func (gs *UsersGRPCServer) GetProfile(ctx context.Context, req *proto.GetProfileRequest) (*proto.UserResponse, error) {
+	log.Println("GetProfile called")
+	return handlers.GetUser(req.UserId)
+}

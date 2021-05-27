@@ -12,6 +12,10 @@ import (
 
 type Configuration struct {
 	Port int `env:"PORT" default:"9000" json:"port"`
+	UsersHost string `env:"USERS_HOST" default:"localhost" json:"usersHost"`
+	UsersPort string `env:"USERS_PORT" default:"7001" json:"usersPort"`
+	JWTSecret string `env:"JWT_SECRET" default:"jwtSecret" json:"jwtSecret"`
+	RedisHost string `env:"REDIS_HOST" default:":6379" json:"redisHost"`
 }
 
 var _config *Configuration

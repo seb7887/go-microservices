@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+const (
+	HealtAPIPath = "/api/v1/health"
+)
+
 // Health is the endpoint for simple health check; it returns 200 OK
 func Health(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)

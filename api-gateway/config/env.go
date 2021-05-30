@@ -14,6 +14,10 @@ type Configuration struct {
 	Port int `env:"PORT" default:"9000" json:"port"`
 	UsersHost string `env:"USERS_HOST" default:"localhost" json:"usersHost"`
 	UsersPort string `env:"USERS_PORT" default:"7001" json:"usersPort"`
+	OrdersHost string `env:"ORDERS_HOST" default:"localhost" json:"ordersHost"`
+	OrdersPort string `env:"ORDERS_PORT" default:"8001" json:"ordersPort"`
+	ShippingHost string `env:"SHIPPING_HOST" default:"localhost" json:"shippingHost"`
+	ShippingPort string `env:"SHIPPING_PORT" default:"6001" json:"shippingPort"`
 	JWTSecret string `env:"JWT_SECRET" default:"jwtSecret" json:"jwtSecret"`
 	RedisHost string `env:"REDIS_HOST" default:":6379" json:"redisHost"`
 }

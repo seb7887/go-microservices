@@ -12,6 +12,7 @@ import (
 
 type OrderMessage struct {
 	OrderId string
+	UserId string
 	ProductName string
 	TotalAmount int32
 }
@@ -39,6 +40,7 @@ func PublishMessage(order *models.Order) error {
 
 	payload := OrderMessage{
 		OrderId: strconv.FormatUint(uint64(order.ID), 10),
+		UserId: order.UserId,
 		ProductName: order.ProductName,
 		TotalAmount: order.TotalAmount,
 	}

@@ -8,6 +8,8 @@ import (
 )
 
 var getUserProfileHandler = http.HandlerFunc(handlers.GetUserProfile)
+var createOrderHandler = http.HandlerFunc(handlers.CreateOrder)
+var listOrdersHandler = http.HandlerFunc(handlers.ListOrders)
 
 func Serve(port int) error {
 	router := mux.NewRouter()
@@ -16,6 +18,8 @@ func Serve(port int) error {
 	router.HandleFunc(handlers.UsersAPIPath, handlers.SignUp).Methods("POST")
 	router.HandleFunc(handlers.LoginAPIPath, handlers.SignIn).Methods("POST")
 	router.HandleFunc(handlers.UserAPIPath, handlers.AuthMiddleware(getUserProfileHandler)).Methods("GET")
+	router.HandleFunc(handlers.OrdersAPIPath, handlers.AuthMiddleware(createOrderHandler)).Methods("POST")
+	router.HandleFunc(handlers.OrdersAPIPath, handlers.AuthMiddleware(listOrdersHandler)).Methods("GET")
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), router)
 }

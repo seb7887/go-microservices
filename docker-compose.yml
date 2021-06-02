@@ -5,6 +5,8 @@ services:
     restart: always
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -17,10 +19,74 @@ services:
     ports:
       - "6379:6379"
 
+  rabbitmq-server:
+    image: "rabbitmq:3-management-alpine"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   api-gateway:
     build: ./api-gateway
     tty: true
+    environment:
+      PORT: 9000
+      USERS_HOST: users-service
+      USERS_PORT: 7001
+      ORDERS_HOST: orders-service
+      ORDERS_PORT: 8001
+      SHIPPING_HOST: shipping-service
+      SHIPPING_PORT: 6001
+      JWT_SECRET: TokenString
     volumes:
       - "./api-gateway:/api-gateway"
     ports:
       - "9000:9000"
+
+  users-service:
+    build: ./users-service
+    environment:
+      PORT: 7000
+      GRPC_PORT: 7001
+      DB_TYPE: postgres
+      DB_CONNECTION: "host=postgres port=5432 user=postgres dbname=postgres sslmode=disable"
+      REDIS_HOST: "redis:6379"
+      JWT_SECRET: TokenString
+    links:
+      - postgres
+      - redis
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+
+  orders-service:
+    build: ./orders-service
+    environment:
+      PORT: 8000
+      GRPC_PORT: 8001
+      DB_TYPE: postgres
+      DB_CONNECTION: "host=postgres port=5432 user=postgres dbname=postgres sslmode=disable"
+      AMQP_URL: "amqp://guest:guest@rabbitmq-server:5672"
+    links:
+      - postgres
+      - rabbitmq-server
+    depends_on:
+      - postgres
+      - rabbitmq-server
+
+  shipping-service:
+    build: ./shipping-service
+    environment:
+      PORT: 6000
+      GRPC_PORT: 6001
+      DB_TYPE: postgres
+      DB_CONNECTION: "host=postgres port=5432 user=postgres dbname=postgres sslmode=disable"
+      AMQP_URL: "amqp://guest:guest@rabbitmq-server:5672"
+    links:
+      - postgres
+      - rabbitmq-server
+    depends_on:
+      - postgres
+      - rabbitmq-server

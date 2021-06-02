@@ -7,3 +7,7 @@ Example developed 100% in Golang using the Microservices architecture and the fo
 - API (gRPC) Gateway
 
 ![Architecture](./architecture.png)
+
+## Getting Started
+
+You can run the example using `docker-compose`
